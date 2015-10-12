@@ -1,23 +1,19 @@
 /* Copyright (c) 2013-2014 Richard Rodger */
-"use strict";
+'use strict'
 
+var Lab = require('lab')
+var Seneca = require('seneca')
 
-// mocha perm.test.js
+var lab = exports.lab = Lab.script()
+var describe = lab.describe
+var it = lab.it
 
+var assert = require('chai').assert
 
-var seneca  = require('seneca')
+describe('perm acl', function () {
+  var si = Seneca()
 
-var assert  = require('chai').assert
-
-var gex     = require('gex')
-var async   = require('async')
-
-
-describe('perm acl', function() {
-
-  var si = seneca()
-
-  si.use( '../perm.js', {
+  si.use('..', {
     accessControls: [{
       name: 'hard set to true',
       roles: ['email_admin'],
@@ -40,61 +36,58 @@ describe('perm acl', function() {
       }],
       hard: false,
       control: 'required',
-      actions: ['load','save_new', 'save_existing', 'list']
+      actions: ['load', 'save_new', 'save_existing', 'list']
     }],
     allowedProperties: [{
       entity: {
-      zone: undefined,
-      base: undefined,
-      name: 'list_item'
+        zone: undefined,
+        base: undefined,
+        name: 'list_item'
       },
       fields: ['name', 'number']
     }]
   })
 
-  it('seneca ready', function(done) {
+  it('seneca ready', function (done) {
     si.ready(done)
   })
 
-  it('access denied - hard set to true - return permission denied', function(done) {
-    var psi  = si.delegate({perm$:{roles:['email_admin']}})
-    var psiList = si.delegate({perm$:{roles:['test_role']}})
+  it('access denied - hard set to true - return permission denied', function (done) {
+    var psi = si.delegate({perm$: {roles: ['email_admin']}})
+    var psiList = si.delegate({perm$: {roles: ['test_role']}})
 
-    var emailItem1 = psi.make('email',{id: 'item1', name: 'Item 1', number: 1, status: 'private'})
+    var emailItem1 = psi.make('email', {id: 'item1', name: 'Item 1', number: 1, status: 'private'})
     var emailItem2 = psiList.make('email')
 
-    ;emailItem1.save$(function(err,emailItem1){
+    emailItem1.save$(function (err, emailItem1) {
       assert.isNull(err, err)
       assert.isNotNull(emailItem1.id)
-      
-      ;emailItem2.list$(function(err, publicList) {
+
+      ;emailItem2.list$(function (err, publicList) {
         assert.isNull(err, err)
         assert.isNotNull(publicList)
-        assert.equal(publicList.length,0)
+        assert.equal(publicList.length, 0)
 
         done()
-      }) 
-
+      })
     })
- 
   })
 
-  it('access denied - hard set to false - return allowed fields only', function(done) {
-
-    var psi  = si.delegate({perm$:{roles:['item_admin']}})
-    var psiList  = si.delegate({
-      perm$:{roles:['test_role']},
+  it('access denied - hard set to false - return allowed fields only', function (done) {
+    var psi = si.delegate({perm$: {roles: ['item_admin']}})
+    var psiList = si.delegate({
+      perm$: {roles: ['test_role']},
       showSoftDenied$: true
     })
 
-    var listItem1 = psi.make('list_item',{id: 'item1', name: 'Item 1', number: 1, status: 'private'})
+    var listItem1 = psi.make('list_item', {id: 'item1', name: 'Item 1', number: 1, status: 'private'})
     var listItem2 = psiList.make('list_item')
-    
-    ;listItem1.save$(function(err,listItem1){
+
+    listItem1.save$(function (err, listItem1) {
       assert.isNull(err, err)
       assert.isNotNull(listItem1.id)
-      
-      ;listItem2.list$(function(err, publicList) {
+
+      ;listItem2.list$(function (err, publicList) {
         assert.isNull(err, err)
         assert.isNotNull(publicList)
         assert.equal(publicList[0].hasOwnProperty('name'), true)
@@ -104,10 +97,7 @@ describe('perm acl', function() {
         assert.equal(publicList.length, 1)
 
         done()
-      }) 
-
+      })
     })
-    
   })
-  
 })
