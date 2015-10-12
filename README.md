@@ -1,8 +1,11 @@
-[![Build Status](https://api.travis-ci.org/rjrodger/seneca-perm.png?branch=master)](https://travis-ci.org/rjrodger/seneca-perm)
+![Seneca](http://senecajs.org/files/assets/seneca-logo.png)
+> A [Seneca.js][] plugin for Seneca permissions
 
 # seneca-perm
+[![Build Status][travis-badge]][travis-url]
+[![Gitter][gitter-badge]][gitter-url]
 
-### Node.js Seneca permissions module
+[![js-standard-style][standard-badge]][standard-style]
 
 This module is a plugin for the Seneca framework. It provides a
 permissions system for actions. It's also a good example of how you can compose actions by layering plugins onto each other.
@@ -23,16 +26,26 @@ the req.seneca object if it exists.
 A full example, in the context of the seneca data editor, is provided
 in the [seneca examples repository](https://github.com/rjrodger/seneca-examples). TODO!
 
+- __Version:__ 0.6.0
+- __Tested on:__ Seneca 0.7.1
+- __Node:__ 0.10, 0.11, 0.12, 4
 
-### Support
+If you are new to Seneca in general, please take a look at [senecajs.org][]. We have everything from tutorials to sample apps to help get you up and running quickly.
 
-If you're using this module, feel free to contact me on twitter if you
-have any questions! :) [@rjrodger](http://twitter.com/rjrodger)
+If you're using this module, and need help, you can:
 
-Current Version: 0.4.0
+- Post a [github issue][],
+- Tweet to [@senecajs][],
+- Ask on the [Gitter][gitter-url].
 
-Tested on: Node 0.10.36, Seneca 0.6.1
 
+## Install
+To install, simply use npm. Remember you will need to install [Seneca.js][] if you haven't already.
+
+```sh
+npm install seneca
+npm install seneca-perm
+```
 
 ### Quick example
 
@@ -138,15 +151,6 @@ app.listen(3000)
 
 The perm plugin does not wrap other actions immediately when it is registered. Rather, you call the _role:perm, cmd:init_ action
 when you're ready. First you need to add any other plugins and actions that you want to apply permissions checking to.
-
-
-
-## Install
-
-```sh
-npm install seneca
-npm install seneca-perm
-```
 
 
 ## Usage
@@ -487,3 +491,26 @@ DEBUG=seneca-perm:* node yourapp.js
 
 
 
+## Contributing
+The [Senecajs org][] encourages open participation. If you feel you can help in any way, be it with
+documentation, examples, extra testing, or new features please get in touch.
+
+## License
+Copyright Richard Rodger and other contributors 2015, Licensed under [MIT][].
+
+[travis-badge]: https://travis-ci.org/rjrodger/seneca-perm.png?branch=master
+[travis-url]: https://travis-ci.org/rjrodger/seneca-perm
+[gitter-badge]: https://badges.gitter.im/Join%20Chat.svg
+[gitter-url]: https://gitter.im/senecajs/seneca
+[standard-badge]: https://raw.githubusercontent.com/feross/standard/master/badge.png
+[standard-style]: https://github.com/feross/standard
+
+[MIT]: ./LICENSE
+[Senecajs org]: https://github.com/senecajs/
+[senecajs.org]: http://senecajs.org/
+[Seneca.js]: https://www.npmjs.com/package/seneca
+[github issue]: https://github.com/rjrodger/seneca-perm/issues
+[@senecajs]: http://twitter.com/senecajs
+
+
+[![Build Status](https://api.travis-ci.org/rjrodger/seneca-perm.png?branch=master)](https://travis-ci.org/rjrodger/seneca-perm)
